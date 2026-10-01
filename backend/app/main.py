@@ -26,6 +26,14 @@ for module in ROUTERS:
     app.include_router(module.router)
 
 
+@app.on_event("startup")
+def sync_seed_schedule() -> None:
+    """种子数据里的排期标记按当前规则重算一遍，避免静态样例与规则视图两个结论。"""
+    from app.services.safetyvalve import SafetyvalveService
+
+    SafetyvalveService().recalc()
+
+
 @app.get("/api/health")
 def health() -> dict[str, object]:
     """健康检查：确认服务已经监听、示例数据已经就绪。"""

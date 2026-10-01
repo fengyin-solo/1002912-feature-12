@@ -28,6 +28,17 @@ class EntryPayload(BaseModel):
     remark: str | None = None
 
 
+class SafetyvalvePageResult(BaseModel):
+    """安全阀台账分页结果，附各排期状态的汇总数量。"""
+
+    items: list[dict[str, Any]]
+    total: int
+    page: int = 1
+    size: int = 20
+    summary: dict[str, int] = Field(default_factory=dict)
+    rules: dict[str, Any] = Field(default_factory=dict)
+
+
 
 class RegisterEntry(BaseModel):
     """设备登记明细结构。"""
